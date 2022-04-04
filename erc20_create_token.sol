@@ -112,12 +112,6 @@ contract ERC20CreateToken {
     // event for token transferFrom
     event TokenTransferredFrom(address token, address from, address to, uint value);
 
-    
-    emit TokenSent(address(this), msg.sender, msg.value);
-    emit TokenTransferred(address(this), msg.sender, msg.sender, msg.value);
-    emit TokenApproved(address(this), msg.sender, msg.value);
-    emit TokenTransferredFrom(address(this), msg.sender, msg.sender, msg.value);
-
     function emitTokenSent(address _token, address _to, uint _value) public {
         emit TokenSent(_token, _to, _value);
     }
@@ -135,7 +129,22 @@ contract ERC20CreateToken {
         return tokenList[msg.sender].getTokenId();
     }
 
+    // send tokens to owner
+    function sendToOwner(uint _value) public {
+        // get the token
+        ERC20 token = tokenList[msg.sender];
+        // send the token to owner
+        token.send(token.getOwner(), _value);
+    }
 
-    
+    // transfer tokens to owner
+    function transferToOwner(uint _value) public {
+        // get the token
+        ERC20 token = tokenList[msg.sender];
+        // transfer the token to owner
+        token.transfer(token.getOwner(), _value);
+    }
+
+        
 }
 
