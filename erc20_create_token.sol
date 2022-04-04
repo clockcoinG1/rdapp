@@ -4,6 +4,7 @@ import "./ERC20.sol";
 
 // create a erc 20 token
 contract ERC20CreateToken {
+    
     // mapping (address => ERC20)
     mapping(address => ERC20) public tokenList;
     event TokenCreated(address token);
@@ -98,6 +99,42 @@ contract ERC20CreateToken {
     function gasUsed() public view returns (uint) {
         return msg.gas;
     }
+
+    // event for token sending
+    event TokenSent(address token, address to, uint value);
+
+    // event for token transfer
+    event TokenTransferred(address token, address from, address to, uint value);
+
+    // event for token approve
+    event TokenApproved(address token, address spender, uint value);
+
+    // event for token transferFrom
+    event TokenTransferredFrom(address token, address from, address to, uint value);
+
+    
+    emit TokenSent(address(this), msg.sender, msg.value);
+    emit TokenTransferred(address(this), msg.sender, msg.sender, msg.value);
+    emit TokenApproved(address(this), msg.sender, msg.value);
+    emit TokenTransferredFrom(address(this), msg.sender, msg.sender, msg.value);
+
+    function emitTokenSent(address _token, address _to, uint _value) public {
+        emit TokenSent(_token, _to, _value);
+    }
+
+    function emitTokenTransferred(address _token, address _from, address _to, uint _value) public {
+        emit TokenTransferred(_token, _from, _to, _value);
+    }
+
+    function emitTokenApproved(address _token, address _spender, uint _value) public {
+        emit TokenApproved(_token, _spender, _value);
+    }
+
+
+    uint public getTokenId() public view returns (uint) {
+        return tokenList[msg.sender].getTokenId();
+    }
+
 
     
 }
